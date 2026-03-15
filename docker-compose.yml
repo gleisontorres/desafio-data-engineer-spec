@@ -99,6 +99,17 @@ services:
     networks:
       - pokemon_network
 
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: pokemon_logs
+    restart: unless-stopped
+    ports:
+      - "${DOZZLE_PORT:-9090}:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - pokemon_network
+
 volumes:
   postgres_data:
 
