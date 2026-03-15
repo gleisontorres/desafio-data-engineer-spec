@@ -95,7 +95,11 @@ def _safe_int(value: Any, default: int = 0) -> int:
     try:
         return int(value)
     except (ValueError, TypeError):
-        return default
+        # Tenta converter via float (para strings como "60.5")
+        try:
+            return int(float(value))
+        except (ValueError, TypeError):
+            return default
 
 
 def _safe_str(value: Any, default: str = "") -> str:

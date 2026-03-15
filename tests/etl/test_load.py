@@ -317,22 +317,19 @@ class TestRunLoad(unittest.TestCase):
         call_order = []
 
         def track_calls(query, data):
-            if (
-                "pokemon (" in query
-                and "pokemon_types" not in query
-                and "pokemon_abilities" not in query
-            ):
-                call_order.append("pokemons")
-            elif "types (" in query:
-                call_order.append("types")
-            elif "abilities (" in query:
-                call_order.append("abilities")
-            elif "stats (" in query:
-                call_order.append("stats")
-            elif "pokemon_types" in query:
+            query_lower = query.lower()
+            if "into pokemon_types" in query_lower:
                 call_order.append("pokemon_types")
-            elif "pokemon_abilities" in query:
+            elif "into pokemon_abilities" in query_lower:
                 call_order.append("pokemon_abilities")
+            elif "into pokemon " in query_lower or "into pokemon(" in query_lower:
+                call_order.append("pokemons")
+            elif "into types " in query_lower or "into types(" in query_lower:
+                call_order.append("types")
+            elif "into abilities " in query_lower or "into abilities(" in query_lower:
+                call_order.append("abilities")
+            elif "into stats " in query_lower or "into stats(" in query_lower:
+                call_order.append("stats")
 
         mock_cursor.executemany.side_effect = track_calls
 
