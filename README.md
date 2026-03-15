@@ -1,6 +1,6 @@
 # Pokemon Data Pipeline
 
-![CI Pipeline](https://github.com/gleisontorres/desafio-data-engineer-spec/actions/workflows/ci.yml/badge.svg)
+[![CI Pipeline](https://github.com/gleisontorres/desafio-data-engineer-spec/actions/workflows/ci.yml/badge.svg)](https://github.com/gleisontorres/desafio-data-engineer-spec/actions)
 
 ---
 
