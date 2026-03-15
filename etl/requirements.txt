@@ -1,0 +1,15 @@
+# HTTP client
+httpx>=0.27.0
+
+# Logging estruturado
+structlog>=24.1.0
+
+# Data manipulation (para transform.py)
+pandas>=2.2.0
+
+# PostgreSQL driver (para load.py)
+psycopg2-binary>=2.9.9
+SQLAlchemy>=2.0.25
+
+# Variáveis de ambiente
+python-dotenv>=1.0.0
