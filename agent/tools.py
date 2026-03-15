@@ -95,7 +95,9 @@ def buscar_pokemon(nome_ou_id: str) -> dict[str, Any]:
     else:
         result = {
             "status": "error",
-            "message": f"Pokemon '{nome_ou_id}' nao encontrado" if status_code == 404 else error,
+            "message": f"Pokemon '{nome_ou_id}' nao encontrado"
+            if status_code == 404
+            else error,
         }
         log_tool_call(logger, "buscar_pokemon", params, result, latency_ms, "error")
         return result
@@ -124,7 +126,14 @@ def listar_por_tipo(tipo: str) -> dict[str, Any]:
     latency_ms = (time.perf_counter() - start_time) * 1000
 
     if data:
-        log_tool_call(logger, "listar_por_tipo", params, {"count": len(data.get("items", []))}, latency_ms, "success")
+        log_tool_call(
+            logger,
+            "listar_por_tipo",
+            params,
+            {"count": len(data.get("items", []))},
+            latency_ms,
+            "success",
+        )
         return {
             "status": "success",
             "tipo": tipo,
@@ -186,7 +195,14 @@ def top_n_por_stat(stat: str, n: int = 10) -> dict[str, Any]:
     latency_ms = (time.perf_counter() - start_time) * 1000
 
     if data:
-        log_tool_call(logger, "top_n_por_stat", params, {"count": len(data.get("items", []))}, latency_ms, "success")
+        log_tool_call(
+            logger,
+            "top_n_por_stat",
+            params,
+            {"count": len(data.get("items", []))},
+            latency_ms,
+            "success",
+        )
         return {
             "status": "success",
             "stat": stat,
@@ -231,7 +247,14 @@ def comparar_pokemons(pokemon_a: str, pokemon_b: str) -> dict[str, Any]:
     latency_ms = (time.perf_counter() - start_time) * 1000
 
     if data:
-        log_tool_call(logger, "comparar_pokemons", params, {"summary": data.get("summary")}, latency_ms, "success")
+        log_tool_call(
+            logger,
+            "comparar_pokemons",
+            params,
+            {"summary": data.get("summary")},
+            latency_ms,
+            "success",
+        )
         return {
             "status": "success",
             "pokemon_a": data.get("pokemon_a"),

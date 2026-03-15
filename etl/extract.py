@@ -113,7 +113,9 @@ def _make_request(url: str, client: httpx.Client) -> dict[str, Any]:
     )
 
 
-def fetch_pokemon(pokemon_id: int, client: httpx.Client | None = None) -> dict[str, Any]:
+def fetch_pokemon(
+    pokemon_id: int, client: httpx.Client | None = None
+) -> dict[str, Any]:
     """
     Busca dados de um Pokemon pelo ID na PokéAPI.
 
@@ -178,7 +180,9 @@ def fetch_pokemon(pokemon_id: int, client: httpx.Client | None = None) -> dict[s
             client.close()
 
 
-def fetch_ability_detail(ability_url: str, client: httpx.Client | None = None) -> dict[str, Any]:
+def fetch_ability_detail(
+    ability_url: str, client: httpx.Client | None = None
+) -> dict[str, Any]:
     """
     Busca detalhes de uma habilidade pelo URL.
 

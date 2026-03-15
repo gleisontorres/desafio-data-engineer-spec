@@ -169,9 +169,7 @@ def clean_pokemon(raw: dict[str, Any]) -> dict[str, Any]:
     name = _safe_str(raw.get("name"))
 
     if pokemon_id <= 0 or not name:
-        raise TransformationError(
-            f"Pokemon invalido: id={pokemon_id}, name={name}"
-        )
+        raise TransformationError(f"Pokemon invalido: id={pokemon_id}, name={name}")
 
     # Processa stats
     raw_stats = raw.get("stats", [])
@@ -224,7 +222,9 @@ def clean_pokemon(raw: dict[str, Any]) -> dict[str, Any]:
         "name": name,
         "height": _safe_int(raw.get("height")),
         "weight": _safe_int(raw.get("weight")),
-        "base_experience": _safe_int(raw.get("base_experience"), DEFAULT_BASE_EXPERIENCE),
+        "base_experience": _safe_int(
+            raw.get("base_experience"), DEFAULT_BASE_EXPERIENCE
+        ),
         "stats": stats,
         "stats_normalized": stats_normalized,
         "types": types,
@@ -232,7 +232,9 @@ def clean_pokemon(raw: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def transform_pokemons(raw_list: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+def transform_pokemons(
+    raw_list: list[dict[str, Any]],
+) -> dict[str, list[dict[str, Any]]]:
     """
     Transforma lista bruta de Pokémon em estruturas prontas para o banco.
 
@@ -269,19 +271,23 @@ def transform_pokemons(raw_list: list[dict[str, Any]]) -> dict[str, list[dict[st
             cleaned = clean_pokemon(raw)
 
             # Dados base do Pokémon
-            pokemons.append({
-                "id": cleaned["id"],
-                "name": cleaned["name"],
-                "height": cleaned["height"],
-                "weight": cleaned["weight"],
-                "base_experience": cleaned["base_experience"],
-            })
+            pokemons.append(
+                {
+                    "id": cleaned["id"],
+                    "name": cleaned["name"],
+                    "height": cleaned["height"],
+                    "weight": cleaned["weight"],
+                    "base_experience": cleaned["base_experience"],
+                }
+            )
 
             # Stats do Pokémon
-            stats_list.append({
-                "pokemon_id": cleaned["id"],
-                **cleaned["stats"],
-            })
+            stats_list.append(
+                {
+                    "pokemon_id": cleaned["id"],
+                    **cleaned["stats"],
+                }
+            )
 
             # Types (coleta únicos e cria relações)
             for t in cleaned["types"]:
@@ -293,11 +299,13 @@ def transform_pokemons(raw_list: list[dict[str, Any]]) -> dict[str, list[dict[st
                         "name": t["type_name"],
                     }
 
-                pokemon_types.append({
-                    "pokemon_id": cleaned["id"],
-                    "type_id": type_id,
-                    "slot": t["slot"],
-                })
+                pokemon_types.append(
+                    {
+                        "pokemon_id": cleaned["id"],
+                        "type_id": type_id,
+                        "slot": t["slot"],
+                    }
+                )
 
             # Abilities (coleta únicas e cria relações)
             for a in cleaned["abilities"]:
@@ -310,12 +318,14 @@ def transform_pokemons(raw_list: list[dict[str, Any]]) -> dict[str, list[dict[st
                         "description": a["description"],
                     }
 
-                pokemon_abilities.append({
-                    "pokemon_id": cleaned["id"],
-                    "ability_id": ability_id,
-                    "is_hidden": a["is_hidden"],
-                    "slot": a["slot"],
-                })
+                pokemon_abilities.append(
+                    {
+                        "pokemon_id": cleaned["id"],
+                        "ability_id": ability_id,
+                        "is_hidden": a["is_hidden"],
+                        "slot": a["slot"],
+                    }
+                )
 
         except TransformationError as e:
             errors_count += 1

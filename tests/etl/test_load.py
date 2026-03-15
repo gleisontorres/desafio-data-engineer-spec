@@ -8,7 +8,7 @@ Cobertura:
 """
 
 import unittest
-from unittest.mock import MagicMock, patch, call
+from unittest.mock import MagicMock, patch
 import sys
 from pathlib import Path
 
@@ -47,7 +47,13 @@ class TestUpsertPokemons(unittest.TestCase):
         mock_conn.cursor.return_value.__exit__ = MagicMock(return_value=False)
 
         pokemons = [
-            {"id": 25, "name": "pikachu", "height": 4, "weight": 60, "base_experience": 112}
+            {
+                "id": 25,
+                "name": "pikachu",
+                "height": 4,
+                "weight": 60,
+                "base_experience": 112,
+            }
         ]
 
         result = upsert_pokemons(mock_conn, pokemons)
@@ -63,9 +69,27 @@ class TestUpsertPokemons(unittest.TestCase):
         mock_conn.cursor.return_value.__exit__ = MagicMock(return_value=False)
 
         pokemons = [
-            {"id": 1, "name": "bulbasaur", "height": 7, "weight": 69, "base_experience": 64},
-            {"id": 2, "name": "ivysaur", "height": 10, "weight": 130, "base_experience": 142},
-            {"id": 3, "name": "venusaur", "height": 20, "weight": 1000, "base_experience": 263},
+            {
+                "id": 1,
+                "name": "bulbasaur",
+                "height": 7,
+                "weight": 69,
+                "base_experience": 64,
+            },
+            {
+                "id": 2,
+                "name": "ivysaur",
+                "height": 10,
+                "weight": 130,
+                "base_experience": 142,
+            },
+            {
+                "id": 3,
+                "name": "venusaur",
+                "height": 20,
+                "weight": 1000,
+                "base_experience": 263,
+            },
         ]
 
         result = upsert_pokemons(mock_conn, pokemons)
@@ -154,17 +178,26 @@ class TestRunLoad(unittest.TestCase):
         """Dados de teste."""
         self.sample_data = {
             "pokemons": [
-                {"id": 25, "name": "pikachu", "height": 4, "weight": 60, "base_experience": 112}
+                {
+                    "id": 25,
+                    "name": "pikachu",
+                    "height": 4,
+                    "weight": 60,
+                    "base_experience": 112,
+                }
             ],
-            "types": [
-                {"id": 13, "name": "electric"}
-            ],
-            "pokemon_types": [
-                {"pokemon_id": 25, "type_id": 13, "slot": 1}
-            ],
+            "types": [{"id": 13, "name": "electric"}],
+            "pokemon_types": [{"pokemon_id": 25, "type_id": 13, "slot": 1}],
             "stats": [
-                {"pokemon_id": 25, "hp": 35, "attack": 55, "defense": 40,
-                 "special_attack": 50, "special_defense": 50, "speed": 90}
+                {
+                    "pokemon_id": 25,
+                    "hp": 35,
+                    "attack": 55,
+                    "defense": 40,
+                    "special_attack": 50,
+                    "special_defense": 50,
+                    "speed": 90,
+                }
             ],
             "abilities": [
                 {"id": 9, "name": "static", "description": "May cause paralysis."}
@@ -222,7 +255,9 @@ class TestRunLoad(unittest.TestCase):
         self.assertEqual(result["types"], 0)
 
     @patch("load.get_connection")
-    def test_run_load_connection_closed_on_success(self, mock_get_conn: MagicMock) -> None:
+    def test_run_load_connection_closed_on_success(
+        self, mock_get_conn: MagicMock
+    ) -> None:
         """Conexão deve ser fechada após sucesso."""
         mock_conn = MagicMock()
         mock_get_conn.return_value = mock_conn
@@ -232,7 +267,9 @@ class TestRunLoad(unittest.TestCase):
         mock_conn.close.assert_called_once()
 
     @patch("load.get_connection")
-    def test_run_load_connection_closed_on_error(self, mock_get_conn: MagicMock) -> None:
+    def test_run_load_connection_closed_on_error(
+        self, mock_get_conn: MagicMock
+    ) -> None:
         """Conexão deve ser fechada mesmo após erro."""
         mock_conn = MagicMock()
         mock_cursor = MagicMock()
@@ -257,7 +294,14 @@ class TestRunLoad(unittest.TestCase):
 
         result = run_load(self.sample_data)
 
-        expected_keys = ["pokemons", "types", "abilities", "stats", "pokemon_types", "pokemon_abilities"]
+        expected_keys = [
+            "pokemons",
+            "types",
+            "abilities",
+            "stats",
+            "pokemon_types",
+            "pokemon_abilities",
+        ]
         for key in expected_keys:
             self.assertIn(key, result)
 
@@ -273,7 +317,11 @@ class TestRunLoad(unittest.TestCase):
         call_order = []
 
         def track_calls(query, data):
-            if "pokemon (" in query and "pokemon_types" not in query and "pokemon_abilities" not in query:
+            if (
+                "pokemon (" in query
+                and "pokemon_types" not in query
+                and "pokemon_abilities" not in query
+            ):
                 call_order.append("pokemons")
             elif "types (" in query:
                 call_order.append("types")

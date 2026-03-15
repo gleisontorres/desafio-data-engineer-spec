@@ -14,6 +14,10 @@ from typing import Any
 
 import structlog
 
+from extract import fetch_all_pokemons, ExtractionError
+from transform import transform_pokemons, TransformationError
+from load import run_load, LoadError
+
 # Configuração do structlog para JSON estruturado
 structlog.configure(
     processors=[
@@ -28,11 +32,6 @@ structlog.configure(
 )
 
 logger = structlog.get_logger(module="main")
-
-# Imports dos módulos ETL
-from extract import fetch_all_pokemons, ExtractionError
-from transform import transform_pokemons, TransformationError
-from load import run_load, LoadError
 
 
 def run_pipeline(limit: int = 151) -> dict[str, Any]:

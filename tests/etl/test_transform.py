@@ -125,11 +125,7 @@ class TestCleanPokemon(unittest.TestCase):
         result = clean_pokemon(self.valid_pokemon)
 
         self.assertIn("stats_normalized", result)
-        self.assertAlmostEqual(
-            result["stats_normalized"]["speed"],
-            90 / 255,
-            places=3
-        )
+        self.assertAlmostEqual(result["stats_normalized"]["speed"], 90 / 255, places=3)
 
     def test_clean_pokemon_null_base_experience(self) -> None:
         """base_experience nulo deve usar valor padrão 0."""
@@ -192,7 +188,14 @@ class TestCleanPokemon(unittest.TestCase):
 
         result = clean_pokemon(pokemon)
 
-        for stat_name in ["hp", "attack", "defense", "special_attack", "special_defense", "speed"]:
+        for stat_name in [
+            "hp",
+            "attack",
+            "defense",
+            "special_attack",
+            "special_defense",
+            "speed",
+        ]:
             self.assertEqual(result["stats"][stat_name], 0)
 
     def test_clean_pokemon_invalid_type_filtered(self) -> None:
@@ -212,8 +215,20 @@ class TestCleanPokemon(unittest.TestCase):
         """Abilities com ability_id inválido devem ser filtradas."""
         pokemon = self.valid_pokemon.copy()
         pokemon["abilities"] = [
-            {"slot": 1, "is_hidden": False, "ability_id": None, "ability_name": "invalid", "description": ""},
-            {"slot": 2, "is_hidden": True, "ability_id": 9, "ability_name": "static", "description": "Works"},
+            {
+                "slot": 1,
+                "is_hidden": False,
+                "ability_id": None,
+                "ability_name": "invalid",
+                "description": "",
+            },
+            {
+                "slot": 2,
+                "is_hidden": True,
+                "ability_id": 9,
+                "ability_name": "static",
+                "description": "Works",
+            },
         ]
 
         result = clean_pokemon(pokemon)
@@ -256,7 +271,13 @@ class TestTransformPokemons(unittest.TestCase):
                     {"slot": 2, "type_id": 4, "type_name": "poison"},
                 ],
                 "abilities": [
-                    {"slot": 1, "is_hidden": False, "ability_id": 65, "ability_name": "overgrow", "description": "Powers up Grass-type moves."},
+                    {
+                        "slot": 1,
+                        "is_hidden": False,
+                        "ability_id": 65,
+                        "ability_name": "overgrow",
+                        "description": "Powers up Grass-type moves.",
+                    },
                 ],
             },
             {
@@ -278,7 +299,13 @@ class TestTransformPokemons(unittest.TestCase):
                     {"slot": 2, "type_id": 4, "type_name": "poison"},
                 ],
                 "abilities": [
-                    {"slot": 1, "is_hidden": False, "ability_id": 65, "ability_name": "overgrow", "description": "Powers up Grass-type moves."},
+                    {
+                        "slot": 1,
+                        "is_hidden": False,
+                        "ability_id": 65,
+                        "ability_name": "overgrow",
+                        "description": "Powers up Grass-type moves.",
+                    },
                 ],
             },
         ]
@@ -348,9 +375,7 @@ class TestTransformPokemons(unittest.TestCase):
 
     def test_transform_invalid_pokemon_skipped(self) -> None:
         """Pokémon inválido deve ser ignorado sem quebrar o pipeline."""
-        pokemon_list = self.pokemon_list + [
-            {"id": None, "name": "invalid"}
-        ]
+        pokemon_list = self.pokemon_list + [{"id": None, "name": "invalid"}]
 
         result = transform_pokemons(pokemon_list)
 

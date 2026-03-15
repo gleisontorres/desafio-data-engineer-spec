@@ -220,7 +220,9 @@ def upsert_stats(conn: PgConnection, stats: list[dict[str, Any]]) -> int:
     return len(stats)
 
 
-def upsert_pokemon_types(conn: PgConnection, pokemon_types: list[dict[str, Any]]) -> int:
+def upsert_pokemon_types(
+    conn: PgConnection, pokemon_types: list[dict[str, Any]]
+) -> int:
     """
     Insere relações pokemon_types.
 
@@ -254,7 +256,9 @@ def upsert_pokemon_types(conn: PgConnection, pokemon_types: list[dict[str, Any]]
     return len(pokemon_types)
 
 
-def upsert_pokemon_abilities(conn: PgConnection, pokemon_abilities: list[dict[str, Any]]) -> int:
+def upsert_pokemon_abilities(
+    conn: PgConnection, pokemon_abilities: list[dict[str, Any]]
+) -> int:
     """
     Insere relações pokemon_abilities.
 
@@ -325,8 +329,12 @@ def run_load(data: dict[str, list[dict[str, Any]]]) -> dict[str, int]:
         counts["types"] = upsert_types(conn, data.get("types", []))
         counts["abilities"] = upsert_abilities(conn, data.get("abilities", []))
         counts["stats"] = upsert_stats(conn, data.get("stats", []))
-        counts["pokemon_types"] = upsert_pokemon_types(conn, data.get("pokemon_types", []))
-        counts["pokemon_abilities"] = upsert_pokemon_abilities(conn, data.get("pokemon_abilities", []))
+        counts["pokemon_types"] = upsert_pokemon_types(
+            conn, data.get("pokemon_types", [])
+        )
+        counts["pokemon_abilities"] = upsert_pokemon_abilities(
+            conn, data.get("pokemon_abilities", [])
+        )
 
         conn.commit()
 
@@ -356,16 +364,26 @@ if __name__ == "__main__":
     # Permite execução direta para teste
     sample_data = {
         "pokemons": [
-            {"id": 25, "name": "pikachu", "height": 4, "weight": 60, "base_experience": 112}
+            {
+                "id": 25,
+                "name": "pikachu",
+                "height": 4,
+                "weight": 60,
+                "base_experience": 112,
+            }
         ],
-        "types": [
-            {"id": 13, "name": "electric"}
-        ],
-        "pokemon_types": [
-            {"pokemon_id": 25, "type_id": 13, "slot": 1}
-        ],
+        "types": [{"id": 13, "name": "electric"}],
+        "pokemon_types": [{"pokemon_id": 25, "type_id": 13, "slot": 1}],
         "stats": [
-            {"pokemon_id": 25, "hp": 35, "attack": 55, "defense": 40, "special_attack": 50, "special_defense": 50, "speed": 90}
+            {
+                "pokemon_id": 25,
+                "hp": 35,
+                "attack": 55,
+                "defense": 40,
+                "special_attack": 50,
+                "special_defense": 50,
+                "speed": 90,
+            }
         ],
         "abilities": [
             {"id": 9, "name": "static", "description": "May cause paralysis."}

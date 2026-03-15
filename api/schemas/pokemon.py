@@ -73,7 +73,9 @@ class PokemonDetail(BaseModel):
     base_experience: int | None = Field(None, description="Experiência base")
     stats: PokemonStats = Field(..., description="Estatísticas base")
     types: list[PokemonType] = Field(default_factory=list, description="Tipos")
-    abilities: list[PokemonAbility] = Field(default_factory=list, description="Habilidades")
+    abilities: list[PokemonAbility] = Field(
+        default_factory=list, description="Habilidades"
+    )
 
     model_config = {"from_attributes": True}
 

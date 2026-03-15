@@ -47,6 +47,7 @@ class TestPokemonEndpoints(unittest.TestCase):
 
         # Importa app após configurar mocks
         from main import app
+
         self.client = TestClient(app)
 
     def tearDown(self) -> None:
@@ -55,7 +56,6 @@ class TestPokemonEndpoints(unittest.TestCase):
 
     def _setup_pokemon_exists(self) -> None:
         """Configura mock para Pokemon existente."""
-        execute_mock = MagicMock()
 
         def execute_side_effect(query, params=None):
             query_str = str(query)
@@ -97,7 +97,6 @@ class TestPokemonEndpoints(unittest.TestCase):
 
     def _setup_pokemon_not_found(self) -> None:
         """Configura mock para Pokemon não encontrado."""
-        execute_mock = MagicMock()
 
         def execute_side_effect(query, params=None):
             result_mock = MagicMock()
@@ -187,7 +186,6 @@ class TestPokemonEndpoints(unittest.TestCase):
 
     def test_top_by_stat_returns_200(self) -> None:
         """GET /pokemons/stats/top deve retornar 200."""
-        execute_mock = MagicMock()
 
         def execute_side_effect(query, params=None):
             result_mock = MagicMock()
@@ -205,7 +203,6 @@ class TestPokemonEndpoints(unittest.TestCase):
 
     def test_top_by_stat_response_structure(self) -> None:
         """GET /pokemons/stats/top deve retornar estrutura correta."""
-        execute_mock = MagicMock()
 
         def execute_side_effect(query, params=None):
             result_mock = MagicMock()
@@ -231,7 +228,6 @@ class TestPokemonEndpoints(unittest.TestCase):
 
     def test_top_by_stat_items_have_rank(self) -> None:
         """GET /pokemons/stats/top itens devem ter rank."""
-        execute_mock = MagicMock()
 
         def execute_side_effect(query, params=None):
             result_mock = MagicMock()
@@ -278,6 +274,7 @@ class TestCompareEndpoint(unittest.TestCase):
         self.mock_session = mock_session
 
         from main import app
+
         self.client = TestClient(app)
 
     def tearDown(self) -> None:
@@ -326,7 +323,9 @@ class TestCompareEndpoint(unittest.TestCase):
 
         self.mock_session.execute.side_effect = execute_side_effect
 
-        response = self.client.get("/pokemons/compare?pokemon_a=pikachu&pokemon_b=raichu")
+        response = self.client.get(
+            "/pokemons/compare?pokemon_a=pikachu&pokemon_b=raichu"
+        )
 
         self.assertEqual(response.status_code, 200)
 
@@ -341,7 +340,12 @@ class TestCompareEndpoint(unittest.TestCase):
             result_mock = MagicMock()
 
             if "FROM pokemon p" in query_str:
-                if params and params.get("pokemon_id") == 25 or params and params.get("name") == "pikachu":
+                if (
+                    params
+                    and params.get("pokemon_id") == 25
+                    or params
+                    and params.get("name") == "pikachu"
+                ):
                     result_mock.fetchone.return_value = pokemon_a
                 else:
                     result_mock.fetchone.return_value = pokemon_b

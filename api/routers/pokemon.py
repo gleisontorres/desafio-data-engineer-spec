@@ -4,8 +4,6 @@ Router de endpoints para Pokemon.
 Todos os endpoints de leitura de dados de Pokemon.
 """
 
-from typing import Literal
-
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import text
 from sqlalchemy.orm import Session
@@ -146,7 +144,9 @@ def _build_pokemon_detail(db: Session, pokemon_data: dict) -> PokemonDetail:
 
     stats = _get_pokemon_stats(db, pokemon_id)
     if not stats:
-        stats = PokemonStats(hp=0, attack=0, defense=0, special_attack=0, special_defense=0, speed=0)
+        stats = PokemonStats(
+            hp=0, attack=0, defense=0, special_attack=0, special_defense=0, speed=0
+        )
 
     types = _get_pokemon_types(db, pokemon_id)
     abilities = _get_pokemon_abilities(db, pokemon_id)
@@ -227,7 +227,10 @@ def list_pokemons(
 
 @router.get("/stats/top", response_model=TopPokemonResponse)
 def get_top_by_stat(
-    stat: str = Query(..., description="Nome do stat (hp, attack, defense, special_attack, special_defense, speed)"),
+    stat: str = Query(
+        ...,
+        description="Nome do stat (hp, attack, defense, special_attack, special_defense, speed)",
+    ),
     limit: int = Query(default=10, ge=1, le=50, description="Quantidade de itens"),
     db: Session = Depends(get_db),
 ) -> TopPokemonResponse:
@@ -322,7 +325,14 @@ def compare_pokemons(
     detail_b = _build_pokemon_detail(db, data_b)
 
     # Compara stats
-    stat_names = ["hp", "attack", "defense", "special_attack", "special_defense", "speed"]
+    stat_names = [
+        "hp",
+        "attack",
+        "defense",
+        "special_attack",
+        "special_defense",
+        "speed",
+    ]
     comparisons = []
     wins_a = 0
     wins_b = 0
@@ -341,13 +351,15 @@ def compare_pokemons(
         else:
             winner = "empate"
 
-        comparisons.append(StatDiff(
-            stat=stat_name,
-            pokemon_a=val_a,
-            pokemon_b=val_b,
-            diff=diff,
-            winner=winner,
-        ))
+        comparisons.append(
+            StatDiff(
+                stat=stat_name,
+                pokemon_a=val_a,
+                pokemon_b=val_b,
+                diff=diff,
+                winner=winner,
+            )
+        )
 
     if wins_a > wins_b:
         summary = f"{detail_a.name} vence em {wins_a} stats"
@@ -428,7 +440,9 @@ def list_pokemons_by_type(
         ORDER BY p.id
         LIMIT :limit OFFSET :offset
     """)
-    results = db.execute(query, {"type_name": type_name, "limit": limit, "offset": offset}).fetchall()
+    results = db.execute(
+        query, {"type_name": type_name, "limit": limit, "offset": offset}
+    ).fetchall()
 
     items = [
         PokemonListItem(

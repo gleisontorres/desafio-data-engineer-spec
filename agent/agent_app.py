@@ -61,7 +61,7 @@ Ferramentas disponiveis:
 def tool_buscar_pokemon(nome_ou_id: str) -> dict:
     """
     Busca informacoes detalhadas de um Pokemon pelo nome ou ID.
-    
+
     Args:
         nome_ou_id: Nome do Pokemon (ex: pikachu) ou ID numerico (ex: 25)
     """
@@ -72,7 +72,7 @@ def tool_buscar_pokemon(nome_ou_id: str) -> dict:
 def tool_listar_por_tipo(tipo: str) -> dict:
     """
     Lista todos os Pokemons de um tipo especifico.
-    
+
     Args:
         tipo: Nome do tipo em ingles (fire, water, electric, grass, etc)
     """
@@ -84,7 +84,7 @@ def tool_top_n_por_stat(stat: str, n: int = 10) -> dict:
     """
     Retorna ranking dos Pokemons com maiores valores em um stat.
     Stats validos: hp, attack, defense, special_attack, special_defense, speed.
-    
+
     Args:
         stat: Nome do stat (hp, attack, defense, special_attack, special_defense, speed)
         n: Quantidade no ranking (padrao 10, maximo 50)
@@ -96,7 +96,7 @@ def tool_top_n_por_stat(stat: str, n: int = 10) -> dict:
 def tool_comparar_pokemons(pokemon_a: str, pokemon_b: str) -> dict:
     """
     Compara dois Pokemons lado a lado mostrando stats e qual e superior.
-    
+
     Args:
         pokemon_a: Nome ou ID do primeiro Pokemon
         pokemon_b: Nome ou ID do segundo Pokemon
@@ -158,13 +158,16 @@ async def ask_agent(question: str) -> str:
 # Modo API (FastAPI)
 # ============================================
 
+
 class AskRequest(BaseModel):
     """Request para o endpoint /ask."""
+
     question: str
 
 
 class AskResponse(BaseModel):
     """Response do endpoint /ask."""
+
     answer: str
 
 
@@ -219,6 +222,7 @@ def health_check() -> dict:
 # Modo CLI
 # ============================================
 
+
 def run_cli(question: str) -> None:
     """
     Executa o agente no modo CLI.
@@ -235,6 +239,7 @@ def run_cli(question: str) -> None:
 
     # Output para stdout (não usar print em produção, mas CLI precisa mostrar resultado)
     import sys
+
     sys.stdout.write(f"\n{answer}\n")
 
 

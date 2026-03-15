@@ -167,7 +167,14 @@ class TestTopNPorStat(unittest.TestCase):
 
     def test_valid_stats_list(self) -> None:
         """Deve haver exatamente 6 stats válidos."""
-        expected_stats = {"hp", "attack", "defense", "special_attack", "special_defense", "speed"}
+        expected_stats = {
+            "hp",
+            "attack",
+            "defense",
+            "special_attack",
+            "special_defense",
+            "speed",
+        }
         self.assertEqual(VALID_STATS, expected_stats)
 
     @patch("tools.httpx.Client")
@@ -178,8 +185,20 @@ class TestTopNPorStat(unittest.TestCase):
         mock_response.json.return_value = {
             "stat": "attack",
             "items": [
-                {"rank": 1, "id": 68, "name": "machamp", "stat_name": "attack", "stat_value": 130},
-                {"rank": 2, "id": 67, "name": "machoke", "stat_name": "attack", "stat_value": 100},
+                {
+                    "rank": 1,
+                    "id": 68,
+                    "name": "machamp",
+                    "stat_name": "attack",
+                    "stat_value": 130,
+                },
+                {
+                    "rank": 2,
+                    "id": 67,
+                    "name": "machoke",
+                    "stat_name": "attack",
+                    "stat_value": 100,
+                },
             ],
         }
 
@@ -219,7 +238,13 @@ class TestCompararPokemons(unittest.TestCase):
             "pokemon_a": {"id": 25, "name": "pikachu"},
             "pokemon_b": {"id": 26, "name": "raichu"},
             "stat_comparison": [
-                {"stat": "attack", "pokemon_a": 55, "pokemon_b": 90, "diff": -35, "winner": "raichu"}
+                {
+                    "stat": "attack",
+                    "pokemon_a": 55,
+                    "pokemon_b": 90,
+                    "diff": -35,
+                    "winner": "raichu",
+                }
             ],
             "summary": "raichu vence em 5 stats",
         }
@@ -239,7 +264,9 @@ class TestCompararPokemons(unittest.TestCase):
         self.assertIn("resumo", result)
 
     @patch("tools.httpx.Client")
-    def test_comparar_pokemons_one_not_found(self, mock_client_class: MagicMock) -> None:
+    def test_comparar_pokemons_one_not_found(
+        self, mock_client_class: MagicMock
+    ) -> None:
         """comparar_pokemons com um Pokemon inexistente deve retornar erro."""
         mock_response = MagicMock()
         mock_response.status_code = 404
@@ -281,7 +308,9 @@ class TestToolsReturnStructure(unittest.TestCase):
 
         for tool_func, args in tools_and_args:
             result = tool_func(*args)
-            self.assertIn("status", result, f"{tool_func.__name__} deve retornar 'status'")
+            self.assertIn(
+                "status", result, f"{tool_func.__name__} deve retornar 'status'"
+            )
             self.assertIn(result["status"], ["success", "error"])
 
 
