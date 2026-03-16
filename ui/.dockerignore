@@ -1,0 +1,42 @@
+# ===========================================
+# .dockerignore - UI Service
+# Arquivos ignorados no build da imagem Docker
+# ===========================================
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+
+# Ambientes virtuais
+venv/
+.venv/
+env/
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# Testes
+tests/
+pytest_cache/
+.coverage
+
+# Documentacao
+*.md
+docs/
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
